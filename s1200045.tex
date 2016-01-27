@@ -2,13 +2,13 @@
 
 
 \usepackage{pifont}
-\usepackage[dvipdfmx]{graphicx}
+%\usepackage[dvipdfmx]{graphicx}
 \usepackage{graphicx}
 \usepackage{cite}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{subcaption}
-\usepackage{mathrsfs} 
+
 
 %% Macro
 \def\x{\mathbf{x}}
@@ -17,7 +17,7 @@
 %%
 
 
-\bibliographystyle{ieice}
+
 
 
 \author{Shingo Ito}
@@ -196,33 +196,46 @@ it is possible to obtain a good approximation to the solution in closed form.
 Most notably their approach does not involve solving any linear system.
 In their approach, the implicit surface is obtained from the function:  
 \begin{equation} \label{hrbfclosed}
-f(x)=-\sum_{j=1}^n<\frac{\rho^2_j}{20+\eta\rho^2_j} \n_j, \nabla\phi(\|\x-\x_j\|)>
+f(x)=-\sum_{j=1}^n<\frac{\rho^2_j}{20+\eta\rho^2_j} \n_j, \nabla\phi_{\rho_j}(\|\x-\x_j\|)>
 \end{equation}
-, where $\rho_j$ is the radius of support of the basis function associated to the center $j$, 
-and $\phi$ is the compactly supported basis function. In this paper, we use a WendalandÅfs CSRBF \cite{WP95} as the kernel function. 
-\[\phi_\rho (r)=\phi(r/\rho)\]
-\[  \phi (t)= \left\{ \begin{array}{ll} (1-t)^{4}(4t+1), & t \in [0,1]\\ 
-0, &otherwise \end{array}\right.\]
-$r$ is the Euclidean distance between a query point and the center of a RBF. 
+where $\rho_j$ is the radius of support of the basis function associated to the center $j$, 
+and $\phi$ is the compactly supported basis function. 
+In this paper, we use one of the Wendland's CSRBF \cite{WP95}: 
+\[
+\phi_{\rho}(r)=\phi(r/\rho)
+\]
+where:
+\[
+\phi (t)= \left\{ \begin{array}{ll} (1-t)^{4}(4t+1), & t \in [0,1]\\ 
+0, & \text{otherwise} \end{array}\right.
+\]
+and $r$ is the Euclidean distance between the query point $\x$ and one of 
+the centers.
+In our experiments below, we use a constant $\rho$ given by 
+the average spacing between the $6$ nearest neighbors and a given point 
+of the input point-set. 
 
 \paragraph{Poisson surface reconstruction}
+\label{Poisson_recon}
 The last surface reconstruction algorithm that we experimented with is 
-Poisson surface reconstruction \cite{KBH06}.
-We used the implementation provided by CGAL \cite{cgal}. 
-This algorithm works by solving the Poisson equation:
-$\Delta f=\nabla\cdot V$
-by the finite element method on an irregular grid. 
-$f$ is an indicator function for the solid approximated by the point-cloud, 
-and $V$ is an extrapolation of the normal vector field. 
-To address this issue, need to solve for the function $f$ such that the projection of $\nabla \cdot V$ onto the space $S_{\mathbb{O},F}$ is closest to the projection of $\Delta f$. Since, in general, the functions $F_{o} $ do not form an orthonormal basis, solving this problem directly is expensive. However, CGAL can simplify the problem by solving for the function $f$ minimizing:
-\[\sum_{o\in \mathbb{O}}\|\ \langle \Delta f-\nabla \cdot V,F_o\rangle \|\ ^2=\sum_{o\in \mathbb{O}}\|\ \langle \Delta f,F_o\rangle-\langle\nabla \cdot V,F_o\rangle \|\ ^2\]
-Thus given the $||\mathbb{O}  \|\ $-dimensional vector $v$ whose 
-$o$-th coordinate is $v_o = \langle \nabla \cdot V,F_o\rangle$, the goal is to solve for the function
- $f$ such that the vector obtained by projecting the Laplacian of $f$ onto each of the $F_o$ is as close to $v$ as possible.
- \par To express this in matrix form, let $f = \sum_{o}x_{o}F_{o}$, so that we are solving for the vector $x \in \mathbb{R}^{|\mathbb{O}|}$. Then, let us define the $|\mathbb{O}| \times |\mathbb{O}|$ matrix $L$ such that $Lx$ returns the dot product of the Laplacian with each of the $F_o$. Specifically, for all $o,o' \in \mathbb{O}$, the $(o,o')$-th entry of $L$ is set to:
- \[L_{o,o'}\equiv\langle\frac{\partial^2F_o}{\partial x^2},F_o'\rangle+\langle\frac{\partial^2F_o}{\partial y^2},F_o'\rangle+\langle\frac{\partial^2F_o}{\partial z^2},F_o'\rangle\]
-Thus, solving for $f$ amounts to finding
-\[\min_{x\in\mathbb{R}^{|\mathbb{O}|}} \|\ Lx-v\|\ ^2\]
+the Poisson surface reconstruction \cite{KBH06}.
+For our experiments, we used the implementation provided 
+by CGAL \cite{cgal}.
+This algorithm works by computing an indicator function $f$ for the solid 
+to be reconstructed. An indicator function $f_S$ for a given solid $S$ is 
+a function, such that: $f_S(\x) = 1$ for $\x \in S$ and $f_S(\x) = 0$ otherwise. 
+In the case of the Poisson surface reconstruction approach, the indicator function
+$f$ is obtained by solving the Poisson equation:
+\begin{equation}\label{Poisson_eq}
+\Delta f=div(\n)
+\end{equation}
+where $\n$ is an extrapolation of the given normal vector field.
+The CGAL implementation solves (\ref{Poisson_eq}) with 
+the finite element method on a tetrahedral mesh. 
+This mesh is obtained from computing the refined Delaunay tetrahedralization 
+of an enlarged bounding box of the input point-cloud.
+Piecewise linear basis functions are used in the finite element method. 
+
 
 \subsection{Implicit surface meshing}
 In order to obtain a deformed surface, we need to compute a triangle mesh implementation of 
@@ -242,6 +255,7 @@ and connecting them we can form a linear approximation of the surface in each ce
 By connecting the patches from all cells, we get a linear approximation of the isosurface.
 
 \paragraph{Delaunay based implicit surface meshing}
+\label{Delaunay_mesh}
 Since we know that all the points from the deformed point-cloud belong to the surface 
 of the deformed object (or at least are close to it), 
 Marching Cubes based algorithm do not look like the most effective approach.
@@ -261,65 +275,85 @@ It was implemented in C++ using the following libraries: CGAL4.7, OpenGL and Eig
 
 \subsection{Deformation of a sphere}
 
+\begin{figure*}
+\hbox{
+\centering\includegraphics[width=0.3\textwidth]{deformed_sphere_hrbf.jpg}
+\centering\includegraphics[width=0.3\textwidth]{deformed_sphere_hrbfclosed-3.jpg}
+\centering\includegraphics[width=0.3\textwidth]{deformed_sphere_poisson.jpg}
+}
+\caption{Deformed sphere using (from left to right): the HRBF approach, 
+the closed form solution to the HRBF approach and the Poisson surface
+reconstruction approach} \label{fig:sphere}
+\end{figure*}
+
 In the first experiment, we start from a sphere represented by a triangle mesh, 
 made of 174 vertices and 344 triangles. The algorithm \ref{algorithm} is applied to 
-deform the sphere. Figures \ref{fig:hrbf}, \ref{fig:closed} and \ref{fig:Poisson} show 
+deform the sphere. Figure \ref{fig:sphere} shows, from left to right,  
 the results obtained with respectively: the HRBF reconstruction approach with 
 the basis function $\|x\|^3$, the closed form approximation (\ref{hrbfclosed}) 
+to the HRBF approach when compactly supported splines are used 
 and the Poisson surface reconstrion approach.
 
-\begin{figure}
-  \centering\includegraphics[width=7cm]{deformed_sphere_hrbf.jpg}
-  \caption{Deformed sphere using the HRBF approach} \label{fig:hrbf}
-\end{figure}
- 
-\begin{figure}
-  \centering\includegraphics[width=7cm]{deformed_sphere_hrbfclosed-3.jpg}
-  \caption{Deformed sphere using the closed form solution to the HRBF approach} \label{fig:closed}
-\end{figure}
-
-\begin{figure}
-  \centering\includegraphics[width=7cm]{deformed_sphere_poisson.jpg}
-  \caption{Deformed sphere using the Poisson surface reconstruction approach} \label{fig:Poisson}
-\end{figure}
-
+%\begin{figure}
+%  \centering\includegraphics[width=0.7\columnwidth]{deformed_sphere_hrbf.jpg}
+%  \caption{Deformed sphere using the HRBF approach} \label{fig:hrbf}
+%\end{figure}
+% 
+%\begin{figure}
+%  \centering\includegraphics[width=0.7\columnwidth]{deformed_sphere_hrbfclosed-3.jpg}
+%  \caption{Deformed sphere using the closed form solution to the HRBF approach} \label{fig:closed}
+%\end{figure}
+%
+%\begin{figure}
+%  \centering\includegraphics[width=0.7\columnwidth]{deformed_sphere_poisson.jpg}
+%  \caption{Deformed sphere using the Poisson surface reconstruction approach} \label{fig:Poisson}
+%\end{figure}
 In our experiments, HRBF with the basis function $\|x\|^3$ is giving the best result 
 but it is also the slowest approach. 
 Additionally, it takes too much memory when non-compactly supported splines are used, 
 because it needs to store a dense matrix in memory.
 It makes the approach impractical for large triangle meshes. 
 The closed form approximation to HRBF is faster but in our experiments 
-we found it difficult to control its behavior.
+we found it a bit difficult to control its behavior.
 Poisson surface reconstruction is fast enough and results in accurate enough reconstructed surfaces. 
 However, it tends to produce smoother surface. For example observe the difference between
-fig. \ref{fig:hrbf} and fig. \ref{fig:Poisson}.
+the left and right images in fig. \ref{fig:sphere}.
 
-
-\subsection{Example of sculptures}
+\subsection{Example of sculpture}
 \begin{figure}
-  \centering\includegraphics[width=7cm]{simple_face_poisson-2.jpg}
+  \centering\includegraphics[width=0.7\columnwidth]{simple_face_poisson-2.jpg}
   \caption{Example to model a simple character face} \label{fig:face}
 \end{figure}
 Starting from a simple sphere, we used our program to model a simple character face. 
-See fig. \ref{fig:face} for the result.
-By changing the sign of the field used for the deformation, we carved the eyes 
-and the mouth.
+The result is illustrated in fig. \ref{fig:face}.
+The eyes and the mouth were carved by changing the sign of the field 
+used for the deformation. 
+In addition, changing the width of the Gaussian function used for the deformation 
+could allow to add or carve smaller details.
 
-
-\subsection{Deformation of more complicated surfaces}
+\subsection{Deformation of a more complex surface}
 \begin{figure}
-  \centering\includegraphics[width=7cm]{deformed_bunny_poisson.jpg}
-  \caption{Deformed tail and nose of bunny} \label{fig:bunnyPoisson}
+  \centering\includegraphics[width=0.7\columnwidth]{deformed_bunny_poisson.jpg}
+  \caption{Deformed bunny object with stretched tail and nose} \label{fig:bunnyPoisson}
 \end{figure}
-The result in fig. \ref{fig:bunnyPoisson} uses the Delaunay based approach while fig.  Original bunny object have  14072 vertices and 28042 triangles.
-The number of subdivisions used for generating the mesh of the deformed bunny with the Marching Cubes algorithm is 
-$64\times 64\times 64=262144$.
+%\begin{figure}
+% \centering\includegraphics[width=0.7\columnwidth]{deformed_bunny_hrbfclosed.jpg}
+% \caption{Deformed tail of bunny} \label{fig:bunnyHrbfclosed}
+%\end{figure}
+Figure \ref{fig:bunnyPoisson} illustrates the result of the deformation of a more complex
+input mesh: the Stanford bunny.
+The input mesh for this object contains 14072 vertices and 28042 triangles.
+The Poisson surface reconstruction approach (see section \ref{Poisson_recon}) 
+and Delaunay based meshing (see section \ref{Delaunay_mesh}) are used.
+In this example, both the tail and the nose are stretched.
+
 \subsection{Recommendations}
-Based on our experiments, we recommend to use the HRBF approach with a non-compact basis function 
-for small mesh (mesh with few vertices), and the Poisson based approach for larger mesh (mesh with 
-a large number of vertices). 
-It seems preferrable to mesh the implicit surface using the Delaunay based approach since it will keep 
-mesh vertices. 
+Based on our experiments, we recommend to use the HRBF approach 
+with a non-compact basis function for small mesh (mesh with few vertices), 
+and the Poisson based approach for larger mesh (mesh with a large number of vertices). 
+It seems preferrable to mesh the implicit surface using the Delaunay based 
+approach since it will keep existing points (original and deformed mesh vertices).
+And therefore will better preserve details without sacrifying too much in term of performance. 
 
 
 \section{Conclusion}
@@ -328,8 +362,8 @@ Reconstruction from the point-cloud is made by fitting an implicit surface to th
 Different algorithms for implicit surface fitting were experimented. 
 We used our prototype for creating simple deformations of triangle meshes and simple sculptures. 
 
-Our algorithm and its implementation can be improved in several ways that are left for future works.
-Examples of possible improvements include:  
+Our algorithm and its implementation can be improved in several ways. This is left for future works.
+Some examples of possible improvement include:  
 implementing parts of the algorithm on the graphics card (GPU), using a modified meshing algorithm that tracks the surface, and exploiting the locality of the deformation. 
 %%\\
 %%The first way to improve the efficiency of our approach is to implement the algorithm for fitting and evaluating the RBF as well as the meshing algorithm (the Marching Cubes) on the graphics card. One of the bottleneck of the current algorithm is the evaluation of the fitted function on the corners of every cell in the regular grid used by the Marching Cubes algorithm. It is possible to improve this approach by considering only the grid cells near the surface (this information is provided by the deformed point-cloud). 
@@ -337,9 +371,11 @@ implementing parts of the algorithm on the graphics card (GPU), using a modified
 %%When compactly supported splines (the spline is non-zero on a compact set) are used in the HRBF approach(Closed HRBF), it does not seem necessary to recompute the function value at cells corners away from the deformed region. This should allow to further decrease the computational time when multiple deformations are applied on a given object.
 
 
-%\section*{Acknowledgement}
+\section*{Acknowledgement}
+The bunny model is courtesy of the Stanford Computer Graphics Laboratory.
 
 
+\bibliographystyle{ieice}
 \bibliography{s1200045}
 
 
