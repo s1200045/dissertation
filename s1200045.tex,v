@@ -1,0 +1,319 @@
+head	1.1;
+access;
+symbols;
+locks
+	fayolle:1.1; strict;
+comment	@% @;
+
+
+1.1
+date	2016.01.14.23.32.20;	author fayolle;	state Exp;
+branches;
+next	;
+
+
+desc
+@first commit
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@\documentclass[ams]{U-AizuGT}
+
+
+\usepackage{pifont}
+%\usepackage[dvipdfmx]{graphicx}
+\usepackage{graphicx}
+\usepackage{cite}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{subcaption}
+
+
+%% Macro
+\def\x{\mathbf{x}}
+\def\R{\mathbb{R}}
+\def\n{\mathbf{n}}
+%%
+
+
+\bibliographystyle{ieice}
+
+
+\author{Shingo Ito}
+\studentid{1200045}
+\supervisor{Pierre-Alain Fayolle}
+
+\title{A simple approach to mesh deformation}
+
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+% (5)
+In this dissertation, we present a simple approach for mesh deformation. 
+Points are sampled from the surface represented by the triangle mesh. 
+The point cloud data is deformed instead of the mesh. 
+Surface reconstruction algorithms are finally used to reconstruct the surface from the deformed point cloud, preventing defects usually appearing in surface deformation algorithms.
+\end{abstract}
+
+
+\section*{Keywords:}
+Mesh processing; Mesh deformation; Surface reconstruction
+
+
+\section{Introduction}
+% (3) Introduce the domain (mesh processing and deformation)
+% justify why this problem is worth being investigated
+% present an overview of the method
+Mesh processing and mesh deformation is an important research topic in the geometric modeling community, with important practical applications. It allows users with relatively little technical knowledge to model complex freeform shapes through simple and intuitive interfaces. Shape deformation is a challenging topic because it can require complex mathematical formulations to be implemented as efficient (in terms of speed) computer programs.
+The topic of shape deformation and shape sculpture is a popular topic in geometric modeling. See for example \cite{BKPAL10} for a survey of recent mesh-based deformation approaches. One of the problems with the typical mesh-based deformation approaches is that they may lead to defects in the input triangle mesh, such as self-intersection for example. In order to overcome this difficulty, we propose an algorithm where a sampling of the triangle mesh is deformed and the deformed surface is obtained from applying a surface reconstruction algorithm to the deformed point cloud. Our deformation algorithm works by applying a field, corresponding to the deformation, to the vertices of a triangle mesh. In order to prevent defects in the mesh such as self-intersection, we reconstruct a surface from the deformed vertices by using standard surface reconstruction algorithms.
+
+
+\section{Related works}
+% (6) I will help you writing it. This should describe similar problems that were solved
+% or existing approaches that tries to solve the same problem
+Surface deformation is an important research topic in shape and geometric modeling. 
+The book by Botsch and colleagues on polygon mesh processing \cite{BKPAL10} has a full 
+chapter on techniques for polygon mesh deformation and gives many references on the topic. 
+When surfaces are represented implicitly, the main technique consists in computing an 
+approximation of the distance to the zero level-set and deforming this distance field. 
+The dissertation of Bridson \cite{B03} describes such techniques. 
+More recently the dissertation of Jacobson \cite{J13} presents novel techniques 
+for mesh deformation techniques based on variational methods and solving partial differential equations. 
+It also contains many references related to the domain of mesh deformation.
+
+
+\section{Algorithm}
+\label{algorithm}
+% (1)
+% Describe the algorithm here
+Algorithms for surface deformation traditionally work by moving the triangle mesh vertices according to some specified vector field corresponding to the deformation. Depending on how the deformation is computed, this approach can result in defects in the triangle mesh such as for example self-intersecting triangles. In this work we propose to apply the deformation to a sampling of the surface and reconstruct the deformed surface by using a surface reconstruction algorithm. Our approach is summarized in the algorithm \ref{alg:main} below.
+
+\begin{algorithm}
+\caption{Overview of the main approach}
+\label{alg:main}
+\begin{algorithmic}
+\State{Sample from the surface}
+\State{Apply the deformation field to the samples}
+\State{Apply a surface reconstruction algorithm to the samples}
+\end{algorithmic}
+\end{algorithm}
+
+
+\subsection{Surface sampling}
+The input surface is represented by a triangle mesh read from a file. 
+If the triangle mesh is dense enough, we select as points the mesh vertices. 
+Otherwise we uniformly sample from each triangle according to the following method \ref{alg:sample}.
+
+\begin{algorithm}
+\caption{Uniform sampling from a triangle}
+\label{alg:sample}
+\begin{algorithmic}
+\Function{Sample}{$p_1$, $p_2$, $p_3$, $\xi_1$, $\xi_2$}
+
+\Comment{$p_1$, $p_2$ and $p_3$ are the triangle vertices, 
+$\xi_1$ and $\xi_2$ are samples from a uniform distribution}
+
+\State Compute the barycentric coordinates: $u = 1-\sqrt{\xi_1}$ 
+and $v = \xi_2 \sqrt{\xi_1}$
+\State Compute the sample: $P = u * p_1 + v * p_2 + (1 - u - v) * p_3$
+
+\Return $P$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+  
+
+\subsection{Points deformation}
+There are different possible approaches for deforming points. We have implemented the following simple approach.
+Given a selected vertex from the input surface, we apply a truncated Gaussian centered on this selected vertex:
+\[
+f(\x)=
+\begin{cases}
+\frac{1}{\sqrt{2\pi\sigma}} \exp\left(- \frac{(\x- \x_S)^{2}}{2 \sigma^{2}}\right) & \text{if } \|\x-\x_S\| < \epsilon \\
+0 & \text{otherwise}
+\end{cases}
+\]
+In this expression, $x_S$ is the selected vertex, $\sigma$ controls the width of the Gaussian and $\epsilon$ controls 
+the truncation.
+
+After deformation, we need to recompute the normal vector to each point of the point cloud 
+since it is needed for the surface reconstruction algorithms described in the next section.
+We used the implementation provided by CGAL \cite{cgal} for normal computation and orientation.
+It implements the algorithm described in \cite{HRDMS92}.
+
+\subsection{Surface reconstruction}
+Given the deformed point-cloud, we then apply a surface reconstruction algorithm to reconstruct a surface from it. 
+We have implemented and experimented with three surface reconstruction algorithms in our implementation.
+All approaches are implicit surface based surface reconstruction algorithms. 
+It means that the surface is obtained as the zero level-set of a function $f: \R^3 \rightarrow \R$. 
+
+\paragraph{Hermite Radial Basis Functions}
+First we have implemented Hermite Radial Basis Functions surface reconstruction (HRBF) 
+surface reconstruction \cite{MGV11}. 
+Given a set of points $P = {\x_i}$ with normal vector at each point $N = {\n_i}$, 
+the output of the method is a function: $f : \R^3 \to \R$ defined as follows:
+\[
+f(\x)=\sum_{i=1}^n(\alpha_i\phi(\|\x-\x_i\|)-\beta_i\nabla\phi(\|\x-\x_i\|))
+\]
+where $\phi$ is a radially symmetric functions (compactly supported or not), 
+%$\phi(t) = t^3$  and 
+$\alpha_i \in \R$ and $\beta_i \in \R^3$ are unknown coefficients to be determined. 
+The conditions used to determine the coefficients are: \[f(\x_i) = 0, \x_i \in \R^3\]
+for interpolating points on the surface. And: \[\nabla f(\x_i)=\n_i, \x_i \in \R^3, \n_i \in \R^3\]
+for interpolating the normals on the surface.
+Taking into account the expression of $f$, we have:
+\[f(\x_i)=\sum_{j=1}^n(\alpha_j\phi(\|\x_i-\x_j\|)-\beta_j\nabla\phi(\|\x_i-\x_j\|))=0\]
+and
+\[\nabla f(\x_i)=\sum_{j=1}^n(\alpha_j\nabla\phi(\|\x_i-\x_j\|)-H\phi(\|\x_i-\x_j\|)\beta_j)=\n_i\]
+where $H$ is the Hessian matrix of $\phi$.
+\\
+The interpolation conditions can be written as:
+%\[
+\begin{align}
+ & \sum_{j=1}^n
+\begin{bmatrix}
+\phi(\|\x_i-\x_j\|) & -\nabla\phi(\|\x_i-\x_j\|)^T\\ \nabla\phi(\|\x_i-\x_j\|) & -H\phi(\|\x_i-\x_j\|)
+\end{bmatrix}
+\begin{bmatrix}
+\alpha_j\\\beta_j
+\end{bmatrix}
+\\
+ & + \sum_{l=1}^m\lambda_l
+\begin{bmatrix}
+p_l(\x_i)\\\nabla p_l(\x_i)
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\ \n_i
+\end{bmatrix}
+\end{align}
+%\]
+And:
+\[\sum_{j=1}^n[p_k(x_j)\nabla p_k(x_j)^T]\begin{bmatrix}\alpha_j\\\beta_j\end{bmatrix}=0\]
+
+Popular choices of radial basis function are: 
+$\phi(\|x\|) = \|x\|$ or $\phi(\|x\|) = \|x\|^3$ or Wendland's compactly supported functions.
+In our experiments we have implemented: $\phi(\|x\|) = \|x\|^3$.
+Gradient and Hessian matrix of $\phi$ are given by:
+\[\nabla\phi(\|x\|) = 3x\|x\|\]
+\[ H \phi (\|x\|)= \left\{ \begin{array}{ll} 3/\|x\|(\|x\|^2I_{3\times3}) + xx^T, & \|x\| \neq 0\\ 
+0_{3\times3}, &\|x\| = 0 \end{array}\right.\]
+where $I_{3\times3}$ is the identity matrix and $0_{3\times3}$ is the zero matrix.
+
+\paragraph{Closed form solution for compactly supported functions}
+When increasing the number of points in the linear system of HRBF-based surface reconstruction,
+numerical instability and expensive computation become a bottleneck \cite{MGV11,LW15}. 
+In a recent work, Liu and Wang showed how to obtain closed form solution when 
+Wendland's compactly supported radial basis functions are used in HRBF surface reconstruction. 
+Most notably their approach does not involve solving any linear system.
+In their approach, the implicit surface is obtained from the function:  
+\[f(x)=-\sum_{j=1}^n<\frac{\rho^2_j}{20+\eta\rho^2_j} \n_j, \nabla\phi(\|\x-\x_j\|)>\],
+where $\rho_j$ is the radius of support of the basis function associated to the center $j$, 
+and $\phi$ is the compactly supported basis function.
+
+\paragraph{Poisson surface reconstruction}
+The last surface reconstruction algorithm that we experimented with is 
+Poisson surface reconstruction \cite{KBH06}.
+We used the implementation provided by CGAL \cite{cgal}. 
+This algorithm works by solving the Poisson equation:
+$\Delta f=div(\n)$
+by the finite element method on an irregular grid. 
+$f$ is an indicator function for the solid approximated by the point-cloud, 
+and $\n$ is an extrapolation of the normal vector field. 
+
+
+\subsection{Implicit surface meshing}
+In order to obtain a deformed surface, we need to compute a triangle mesh implementation of 
+the implicit surface computed as described in the previous section. 
+
+\paragraph{Marching Cubes}
+The most common technique for meshing the zero level-set of implicit surface relies 
+on the Marching Cubes algorithm \cite{LC87}.
+The Marching Cubes algorithm is an algorithm for rendering isosurfaces from volumetric data. 
+The basic idea is that we can define a voxel from the values of the function $f$ at the eight corners of the cell. 
+If one or more values of a cube have values less than the user-specified isovalue, and one or more have values greater than this value, we know the voxel must contribute some component of the isosurface. By determining which edges of the cube are intersected by the isosurface, we can create triangular patches which divide the cube between regions within the isosurface and regions outside. By connecting the patches from all cubes on the isosurface boundary, we get a surface representation. 
+
+\paragraph{Delaunay based implicit surface meshing}
+Since we know that all the points from the deformed point-cloud belong to the surface 
+of the deformed object (or at least are close to it), 
+Marching Cubes based algorithm do not look like the most effective approach.
+Instead one could compute a Delaunay tetrahedralization of the deformed point-cloud and peel off outside 
+tetrahedra using the fitted function (either from the HRBF or Poisson surface reconstruction approach).
+One practical implementation is the implicit surface mesh generator implemented by CGAL
+which is an implementation of the algorithm of Boissonat and Oudot \cite{BO05}.
+
+
+\section{Experiments and results}
+% (2)
+% Describe the environment for the experiments (hardware details, OS, programming language and libraries used)
+% Show examples of deformations with the program
+% Explain and demonstrate the limitations of the program
+A prototype for the methods described in section \ref{algorithm} was implemented on a laptop
+with the following specifications: CPU is 1.4GHz Intel Core i5, Memory is 4 GB 1600 MHz DDR3, 
+graphics board is Intel HD Graphics 5000 1536 MB, 
+OS is OS X Yosemite version 10.10.5. 
+It was implemented in C++ using the following libraries: CGAL4.7, OpenGL and Eigen.
+
+
+\subsection{Deformation of a sphere}
+ 
+\begin{figure}
+  \centering\includegraphics[width=7cm]{deformed_sphere_hrbf.jpg}
+  \caption{Deformed sphere using the HRBF approach} \label{fig:hrbf}
+\end{figure}
+ 
+\begin{figure}
+  \centering\includegraphics[width=7cm]{deformed_sphere_hrbfclosed.jpg}
+  \caption{Deformed sphere using the closed form solution to the HRBF approach} \label{fig:closed}
+\end{figure}
+
+\begin{figure}
+  \centering\includegraphics[width=7cm]{deformed_sphere_poisson.jpg}
+  \caption{Deformed sphere using the Poisson surface reconstruction approach} \label{fig:Poisson}
+\end{figure}
+
+Figure \ref{fig:hrbf} corresponds to the result of the HRBF reconstruction from a deformed mesh. 
+Figure \ref{fig:closed} corresponds to the case where the closed form solution is used. 
+Figure \ref{fig:Poisson} corresponds to the approach using Poisson surface reconstruction. 
+In our experiments, HRBF is giving the best result but it is too slow 
+and takes too much memory for large triangle meshes. 
+Closed form solution to HRBF is faster than HRBF but in our experiments it did not resutl 
+in precise reconstruction.
+Poisson surface reconstruction was fast enough and resulted in accurately reconstructed surface. 
+However, it tends to smooths out detail too much. 
+
+
+\subsection{Example of sculptures}
+% Show some nicer examples of sculptures
+
+
+\subsection{Deformation of more complicated surfaces}
+% Demonstrate resuls with more complex surfaces
+
+
+
+\section{Conclusion}
+% (4) Summarize what was done. Explain the parts that need further work and how you plan to extend this work in the future.
+In this paper, we proposed program that have deformation algorithm that works by applying a field, corresponding to the deformation to the vertices of a triangle mesh, and three algorithm to reconstruct it. Our algorithm is not fast. It is possible to implement a more efficient way. Implementing part of the algorithm on the graphics card(GPU), using a modified meshing algorithm that tracks the surface, exploiting the locality of the deformation and compactly supported splines. 
+\\
+The first way to improve the efficiency of our approach is to implement the algorithm for fitting and evaluating the RBF as well as the meshing algorithm (the Marching Cubes) on the graphics card. One of the bottleneck of the current algorithm is the evaluation of the fitted function on the corners of every cell in the regular grid used by the Marching Cubes algorithm. It is possible to improve this approach by considering only the grid cells near the surface (this information is provided by the deformed point-cloud). 
+\\
+When compactly supported splines (the spline is non-zero on a compact set) are used in the HRBF approach(Closed HRBF), it does not seem necessary to recompute the function value at cells corners away from the deformed region. This should allow to further decrease the computational time when multiple deformations are applied on a given object.
+
+
+\section*{Acknowledgement}
+
+
+\bibliography{s1200045}
+
+
+\end{document}
+@
