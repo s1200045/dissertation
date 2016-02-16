@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.6-141210-2.6 (utf8.euc) (TeX Live 2015) (preloaded format=platex 2015.7.9)  27 JAN 2016 16:22
+This is e-pTeX, Version 3.14159265-p3.6-141210-2.6 (utf8.euc) (TeX Live 2015) (preloaded format=platex 2015.7.9)  16 FEB 2016 14:43
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -288,112 +288,93 @@ Package caption Info: float package is loaded.
 (./s1200045.aux)
 \openout1 = `s1200045.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/txmi/m/it on input line 30.
-LaTeX Font Info:    Try loading font information for OML+txmi on input line 30.
+LaTeX Font Info:    Checking defaults for OML/txmi/m/it on input line 29.
+LaTeX Font Info:    Try loading font information for OML+txmi on input line 29.
 
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/txfonts/omltxmi.fd
 File: omltxmi.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OMS/txsy/m/n on input line 30.
-LaTeX Font Info:    Try loading font information for OMS+txsy on input line 30.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OMS/txsy/m/n on input line 29.
+LaTeX Font Info:    Try loading font information for OMS+txsy on input line 29.
 
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/txfonts/omstxsy.fd
 File: omstxsy.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OMX/txex/m/n on input line 30.
-LaTeX Font Info:    Try loading font information for OMX+txex on input line 30.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OMX/txex/m/n on input line 29.
+LaTeX Font Info:    Try loading font information for OMX+txex on input line 29.
 
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/txfonts/omxtxex.fd
 File: omxtxex.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for U/txexa/m/n on input line 30.
-LaTeX Font Info:    Try loading font information for U+txexa on input line 30.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for U/txexa/m/n on input line 29.
+LaTeX Font Info:    Try loading font information for U+txexa on input line 29.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/txfonts/utxexa.fd
 File: utxexa.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for JY1/mc/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for JT1/mc/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for JY1/mc/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for JT1/mc/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
 
 (I search kanjifont definition file: . . ) (I search font definition file: . .
 . . . . . )
-LaTeX Font Info:    Try loading font information for OT1+txr on input line 30.
+LaTeX Font Info:    Try loading font information for OT1+txr on input line 29.
  (/usr/local/texlive/2015/texmf-dist/tex/latex/txfonts/ot1txr.fd
 File: ot1txr.fd 2000/12/15 v3.1
 )
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
 LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <14.4> not available
-(Font)              Font shape `JT1/gt/m/n' tried instead on input line 34.
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 33.
 LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <14.4> not available
-(Font)              Font shape `JY1/gt/m/n' tried instead on input line 34.
-LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <10> not available
-(Font)              Font shape `JT1/gt/m/n' tried instead on input line 48.
-LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <10> not available
-(Font)              Font shape `JY1/gt/m/n' tried instead on input line 48.
-
-
-LaTeX Warning: Citation `BKPAL10' on page 1 undefined on input line 48.
-
-
-LaTeX Warning: Citation `BKPAL10' on page 1 undefined on input line 53.
-
-
-LaTeX Warning: Citation `B03' on page 1 undefined on input line 57.
-
-
-LaTeX Warning: Citation `J13' on page 1 undefined on input line 58.
-
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 33.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-
-
-LaTeX Warning: Reference `alg:main' on page 1 undefined on input line 65.
-
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <10> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 67.
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <10> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 67.
 LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <12> not available
-(Font)              Font shape `JT1/gt/m/n' tried instead on input line 78.
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 77.
 LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <12> not available
-(Font)              Font shape `JY1/gt/m/n' tried instead on input line 78.
-
-LaTeX Warning: Reference `alg:sample' on page 1 undefined on input line 81.
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 77.
 
 
 LaTeX Font Warning: Font shape `JT1/mc/m/sc' undefined
-(Font)              using `JT1/mc/m/n' instead on input line 87.
+(Font)              using `JT1/mc/m/n' instead on input line 86.
 
 
 LaTeX Font Warning: Font shape `JY1/mc/m/sc' undefined
-(Font)              using `JY1/mc/m/n' instead on input line 87.
+(Font)              using `JY1/mc/m/n' instead on input line 86.
 
-LaTeX Font Info:    Try loading font information for U+txmia on input line 87.
+LaTeX Font Info:    Try loading font information for U+txmia on input line 86.
 (/usr/local/texlive/2015/texmf-dist/tex/latex/txfonts/utxmia.fd
 File: utxmia.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    Try loading font information for U+txsya on input line 87.
+LaTeX Font Info:    Try loading font information for U+txsya on input line 86.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/txfonts/utxsya.fd
 File: utxsya.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    Try loading font information for U+txsyb on input line 87.
+LaTeX Font Info:    Try loading font information for U+txsyb on input line 86.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/txfonts/utxsyb.fd
 File: utxsyb.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    Try loading font information for U+txsyc on input line 87.
+LaTeX Font Info:    Try loading font information for U+txsyc on input line 86.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/txfonts/utxsyc.fd
 File: utxsyc.fd 2000/12/15 v3.1
@@ -410,56 +391,18 @@ LaTeX Font Info:    Font shape `JY1/mc/m/sl' in size <9> not available
 
 
 ]
-
-LaTeX Warning: Citation `cgal' on page 2 undefined on input line 117.
-
-
-LaTeX Warning: Citation `HRDMS92' on page 2 undefined on input line 118.
-
-
-LaTeX Warning: Citation `MGV11' on page 2 undefined on input line 128.
-
-
 Underfull \hbox (badness 4531) in paragraph at lines 172--176
 []\OT1/txr/m/n/10 Popular choices of ra-dial ba-sis func-tion are:
  []
 
 
-LaTeX Warning: Reference `hrbf1' on page 2 undefined on input line 181.
-
-
-LaTeX Warning: Reference `hrbfcond' on page 2 undefined on input line 181.
-
-
-LaTeX Warning: Citation `MGV11' on page 2 undefined on input line 192.
-
-
-LaTeX Warning: Citation `LW15' on page 2 undefined on input line 193.
+Underfull \hbox (badness 1264) in paragraph at lines 188--198
+ \OT1/txr/bx/n/10 Closed form ap-prox-i-ma-tion for com-pactly sup-
+ []
 
 [2]
-
-LaTeX Warning: Citation `WP95' on page 3 undefined on input line 203.
-
-
-LaTeX Warning: Citation `KBH06' on page 3 undefined on input line 221.
-
-
-LaTeX Warning: Citation `cgal' on page 3 undefined on input line 223.
-
-
-LaTeX Warning: Reference `Poisson_eq' on page 3 undefined on input line 233.
-
-
-LaTeX Warning: Citation `LC87' on page 3 undefined on input line 246.
-
-
-LaTeX Warning: Citation `BO05' on page 3 undefined on input line 265.
-
-
-LaTeX Warning: Reference `algorithm' on page 3 undefined on input line 269.
-
 File: deformed_sphere_hrbf.jpg Graphic file (type bmp)
-<deformed_sphere_hrbf.jpg>
+ <deformed_sphere_hrbf.jpg>
 File: deformed_sphere_hrbfclosed-3.jpg Graphic file (type bmp)
  <deformed_sphere_hrbfclosed-3.jpg>
 File: deformed_sphere_poisson.jpg Graphic file (type bmp)
@@ -468,57 +411,38 @@ File: deformed_sphere_poisson.jpg Graphic file (type bmp)
 Underfull \vbox (badness 4647) has occurred while \output is active []
 
  [3]
-
-LaTeX Warning: Reference `algorithm' on page 4 undefined on input line 290.
-
-
-LaTeX Warning: Reference `fig:sphere' on page 4 undefined on input line 291.
-
-
-LaTeX Warning: Reference `hrbfclosed' on page 4 undefined on input line 293.
-
-
-LaTeX Warning: Reference `fig:sphere' on page 4 undefined on input line 320.
-
 File: simple_face_poisson-2.jpg Graphic file (type bmp)
+
 <simple_face_poisson-2.jpg>
-
-LaTeX Warning: Reference `fig:face' on page 4 undefined on input line 328.
-
 File: deformed_bunny_poisson.jpg Graphic file (type bmp)
-<deformed_bunny_poisson.jpg>
-
-LaTeX Warning: Reference `fig:bunnyPoisson' on page 4 undefined on input line 3
-43.
-
-
-LaTeX Warning: Reference `Poisson_recon' on page 4 undefined on input line 346.
+ <deformed_bunny_poisson.jpg> (./s1200045.bbl
+[4]
+Underfull \hbox (badness 7221) in paragraph at lines 31--34
+[]\OT1/txr/m/n/10 S. Liu, C. C. Wang, G. Brun-nett, and
+ []
 
 
+Underfull \hbox (badness 1824) in paragraph at lines 31--34
+\OT1/txr/m/n/10 based sur-face re-con-struc-tion,'' arXiv preprint
+ []
 
-LaTeX Warning: Reference `Delaunay_mesh' on page 4 undefined on input line 347.
 
+Underfull \hbox (badness 2653) in paragraph at lines 49--52
+\OT1/txr/m/n/10 def-i-nite and com-pactly sup-ported ra-dial ba-
+ []
 
-(./s1200045.bbl) [4] [5
-
-] (./s1200045.aux)
+) [5] (./s1200045.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
  ) 
 Here is how much of TeX's memory you used:
- 3904 strings out of 493777
- 55084 string characters out of 6151335
+ 3943 strings out of 493777
+ 55558 string characters out of 6151335
  128890 words of memory out of 5000000
- 7307 multiletter control sequences out of 15000+600000
- 27237 words of font info for 83 fonts, out of 8000000 for 9000
+ 7337 multiletter control sequences out of 15000+600000
+ 35499 words of font info for 110 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
- 42i,14n,40p,909b,420s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 42i,18n,40p,903b,443s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on s1200045.dvi (5 pages, 25092 bytes).
+Output written on s1200045.dvi (5 pages, 27484 bytes).

@@ -2,7 +2,7 @@
 
 
 \usepackage{pifont}
-%\usepackage[dvipdfmx]{graphicx}
+\usepackage[dvipdfmx]{graphicx}
 \usepackage{graphicx}
 \usepackage{cite}
 \usepackage{algorithm}
@@ -10,14 +10,13 @@
 \usepackage{subcaption}
 
 
+
 %% Macro
 \def\x{\mathbf{x}}
 \def\R{\mathbb{R}}
 \def\n{\mathbf{n}}
+\def\bbeta{\boldsymbol\beta}
 %%
-
-
-
 
 
 \author{Shingo Ito}
@@ -87,7 +86,7 @@ Otherwise we uniformly sample from each triangle according to the following meth
 \Function{Sample}{$p_1$, $p_2$, $p_3$, $\xi_1$, $\xi_2$}
 
 \Comment{$p_1$, $p_2$ and $p_3$ are the triangle vertices, 
-$\xi_1$ and $\xi_2$ are samples from a uniform distribution}
+$\xi_1$ and $\xi_2$ are samples from the unit uniform distribution}
 
 \State Compute the barycentric coordinates: $u = 1-\sqrt{\xi_1}$ 
 and $v = \xi_2 \sqrt{\xi_1}$
@@ -101,16 +100,17 @@ and $v = \xi_2 \sqrt{\xi_1}$
 
 \subsection{Points deformation}
 There are different possible approaches for deforming points. We have implemented the following simple approach.
-Given a selected vertex from the input surface, we apply a truncated Gaussian centered on this selected vertex:
+Given a selected vertex from the input surface, we displace each point in the normal direction
+by a truncated Gaussian centered on this selected vertex:
 \[
 f(\x)=
 \begin{cases}
-\frac{1}{\sqrt{2\pi\sigma}} \exp\left(- \frac{(\x- \x_S)^{2}}{2 \sigma^{2}}\right) & \text{if } \|\x-\x_S\| < \epsilon \\
+\frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(- \frac{(\x- \x_S)^{2}}{2 \sigma^{2}}\right) & \text{if } \|\x-\x_S\| < r \\
 0 & \text{otherwise}
 \end{cases}
 \]
-In this expression, $x_S$ is the selected vertex, $\sigma$ controls the width of the Gaussian and $\epsilon$ controls 
-the truncation.
+In this expression, $x_S$ is the selected vertex, $\sigma$ controls the width of the Gaussian and $r$ controls 
+the radius of support of the truncated Gaussian.
 
 After deformation, we need to recompute the normal vector to each point of the point cloud 
 since it is needed for the surface reconstruction algorithms described in the next section.
@@ -129,7 +129,7 @@ surface reconstruction \cite{MGV11}.
 Given a set of points $P = {\x_i}$ with normal vector at each point $N = {\n_i}$, 
 the output of the method is a function: $f : \R^3 \to \R$ defined as follows:
 \[
-f(\x)=\sum_{i=1}^n(\alpha_i\phi(\|\x-\x_i\|)-\beta_i\nabla\phi(\|\x-\x_i\|))
+f(\x)=\sum_{i=1}^n(\alpha_i\phi(\|\x-\x_i\|)-\bbeta_i\nabla\phi(\|\x-\x_i\|))
 \]
 where $\phi$ is a radially symmetric functions (compactly supported or not), 
 %$\phi(t) = t^3$  and 
@@ -138,9 +138,9 @@ The conditions used to determine the coefficients are: \[f(\x_i) = 0, \x_i \in \
 for interpolating points on the surface. And: \[\nabla f(\x_i)=\n_i, \x_i \in \R^3, \n_i \in \R^3\]
 for interpolating the normals on the surface.
 Taking into account the expression of $f$, we have:
-\[f(\x_i)=\sum_{j=1}^n(\alpha_j\phi(\|\x_i-\x_j\|)-\beta_j\nabla\phi(\|\x_i-\x_j\|))=0\]
+\[f(\x_i)=\sum_{j=1}^n(\alpha_j\phi(\|\x_i-\x_j\|)-\bbeta_j\nabla\phi(\|\x_i-\x_j\|))=0\]
 and
-\[\nabla f(\x_i)=\sum_{j=1}^n(\alpha_j\nabla\phi(\|\x_i-\x_j\|)-H\phi(\|\x_i-\x_j\|)\beta_j)=\n_i\]
+\[\nabla f(\x_i)=\sum_{j=1}^n(\alpha_j\nabla\phi(\|\x_i-\x_j\|)-H\phi(\|\x_i-\x_j\|)\bbeta_j)=\n_i\]
 where $H$ is the Hessian matrix of $\phi$.
 \\
 The interpolation conditions can be written as:
@@ -151,7 +151,7 @@ The interpolation conditions can be written as:
 \phi(\|\x_i-\x_j\|) & -\nabla\phi(\|\x_i-\x_j\|)^T\\ \nabla\phi(\|\x_i-\x_j\|) & -H\phi(\|\x_i-\x_j\|)
 \end{bmatrix}
 \begin{bmatrix}
-\alpha_j\\\beta_j
+\alpha_j\\\bbeta_j
 \end{bmatrix} \nonumber
 \\
  & + \sum_{l=1}^m\lambda_l
@@ -166,7 +166,7 @@ p_l(\x_i)\\\nabla p_l(\x_i)
 %\]
 With the additional condition:
 \begin{equation} \label{hrbfcond}
-\sum_{j=1}^n[p_k(x_j)\nabla p_k(x_j)^T]\begin{bmatrix}\alpha_j\\\beta_j\end{bmatrix}=0
+\sum_{j=1}^n[p_k(x_j)\nabla p_k(x_j)^T]\begin{bmatrix}\alpha_j\\\bbeta_j\end{bmatrix}=0
 \end{equation}
 
 Popular choices of radial basis function are: 
@@ -184,7 +184,7 @@ $\mathbf{A} \mathbf{w} = \mathbf{b}$
 where the vector $\mathbf{w}$ contains the unknown coefficients. 
 They are obtained from inverting the matrix $\mathbf{A}$.
 
-\paragraph{Closed form solution for compactly supported functions}
+\paragraph{Closed form approximation for compactly supported functions}
 The use of non-compactly supported splines results in a dense matrix, 
 which makes the approach above not practical for large point sets.
 In order to handle such large point sets, it is preferrable to use 

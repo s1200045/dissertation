@@ -1,0 +1,53 @@
+\begin{thebibliography}{10}
+\newcommand{\enquote}[1]{``#1''}
+
+\bibitem{BO05}
+J.-D. Boissonnat and S.~Oudot, \enquote{Provably good sampling and meshing of
+  surfaces,} Graphical Models, vol.\,67, no.\,5, pp.\,405--451, 2005.
+
+\bibitem{BKPAL10}
+M.~Botsch, L.~Kobbelt, M.~Pauly, P.~Alliez, and B.~L{\'e}vy, Polygon mesh
+  processing, CRC press, 2010.
+
+\bibitem{B03}
+R.~Bridson, Computational aspects of dynamic surface, Ph.D. thesis, Stanford,
+  2003.
+
+\bibitem{HRDMS92}
+H.~Hoppe, T.~DeRose, T.~Duchamp, J.~McDonald, and W.~Stuetzle, \enquote{Surface
+  reconstruction from unorganized points,} SIGGRAPH Comput. Graph., vol.\,26,
+  no.\,2, pp.\,71--78, 1992.
+
+\bibitem{J13}
+A.~Jacobson, Algorithms and Interfaces for Real-Time Deformation of 2D and 3D
+  Shapes, Ph.D. thesis, ETH Zurich, 2013.
+
+\bibitem{KBH06}
+M.~Kazhdan, M.~Bolitho, and H.~Hoppe, \enquote{Poisson surface reconstruction,}
+  Proceedings of the fourth Eurographics symposium on Geometry processing,
+  vol.\,7, 2006.
+
+\bibitem{LW15}
+S.~Liu, C.~C. Wang, G.~Brunnett, and J.~Wang, \enquote{A closed-form
+  formulation of hrbf-based surface reconstruction,} arXiv preprint
+  arXiv:1507.02860, 2015.
+
+\bibitem{LC87}
+W.~E. Lorensen and H.~E. Cline, \enquote{Marching cubes: A high resolution 3d
+  surface construction algorithm,} ACM siggraph computer graphics, vol.\,21,
+  no.\,4, pp.\,163--169, 1987.
+
+\bibitem{MGV11}
+I.~Macedo, J.~P. Gois, and L.~Velho, \enquote{Hermite radial basis functions
+  implicits,} Computer Graphics Forum, vol.\,30, no.\,1, 2011.
+
+\bibitem{cgal}
+{The CGAL Project}, {CGAL} User and Reference Manual, {CGAL Editorial Board},
+  {4.7} edn., 2015.
+
+\bibitem{WP95}
+H.~Wendland, \enquote{Piecewise polynomial, positive definite and compactly
+  supported radial basis functions of minimal degree,} Advances in
+  Computational Mathematics, vol.\,4, pp.\,389--396, 1995.
+
+\end{thebibliography}

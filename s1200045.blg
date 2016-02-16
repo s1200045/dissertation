@@ -1,52 +1,47 @@
 This is pBibTeX, Version 0.99d-j0.33 (utf8.euc) (TeX Live 2015)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: s1200045.aux
-I couldn't open style file ieice.bst
----line 2 of file s1200045.aux
- : \bibstyle{ieice
- :                }
-I'm skipping whatever remains of this command
-I found no style file---while reading file s1200045.aux
-You've used 10 entries,
-            0 wiz_defined-function locations,
-            104 strings with 596 characters,
-and the built_in function-call counts, 0 in all, are:
-= -- 0
-> -- 0
-< -- 0
-+ -- 0
-- -- 0
-* -- 0
-:= -- 0
-add.period$ -- 0
-call.type$ -- 0
-change.case$ -- 0
-chr.to.int$ -- 0
-cite$ -- 0
-duplicate$ -- 0
-empty$ -- 0
-format.name$ -- 0
-if$ -- 0
+The style file: ieice.bst
+Database file #1: s1200045.bib
+You've used 11 entries,
+            2648 wiz_defined-function locations,
+            685 strings with 6196 characters,
+and the built_in function-call counts, 3196 in all, are:
+= -- 263
+> -- 171
+< -- 7
++ -- 68
+- -- 56
+* -- 279
+:= -- 546
+add.period$ -- 18
+call.type$ -- 11
+change.case$ -- 59
+chr.to.int$ -- 6
+cite$ -- 11
+duplicate$ -- 125
+empty$ -- 258
+format.name$ -- 56
+if$ -- 628
 int.to.chr$ -- 0
-int.to.str$ -- 0
-missing$ -- 0
-newline$ -- 0
-num.names$ -- 0
-pop$ -- 0
-preamble$ -- 0
-purify$ -- 0
+int.to.str$ -- 11
+missing$ -- 11
+newline$ -- 37
+num.names$ -- 22
+pop$ -- 54
+preamble$ -- 1
+purify$ -- 50
 quote$ -- 0
-skip$ -- 0
+skip$ -- 73
 stack$ -- 0
-substring$ -- 0
-swap$ -- 0
-text.length$ -- 0
+substring$ -- 160
+swap$ -- 26
+text.length$ -- 5
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 0
+type$ -- 40
 warning$ -- 0
-while$ -- 0
-width$ -- 0
-write$ -- 0
+while$ -- 31
+width$ -- 13
+write$ -- 100
 is.kanji.str$ -- 0
-(There were 2 error messages)
